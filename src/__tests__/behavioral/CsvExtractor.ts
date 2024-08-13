@@ -1,3 +1,5 @@
+import fs from 'fs'
+
 export default class CsvExtractorImpl implements CsvExtractor {
     public static Class?: CsvExtractorConstructor
 
@@ -17,9 +19,12 @@ export default class CsvExtractorImpl implements CsvExtractor {
         if (!csvPath) {
             throw new Error('Missing required options: csvPath!')
         }
+        if (!fs.existsSync(csvPath)) {
+            throw new Error(`Csv file does not exist at path: ${csvPath}`)
+        }
     }
 }
 
 export interface CsvExtractor {}
 
-export type CsvExtractorConstructor = new () => CsvExtractor
+export type CsvExtractorConstructor = new (csvPath: string) => CsvExtractor
