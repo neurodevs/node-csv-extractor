@@ -1,4 +1,4 @@
-import CsvExtractorImpl from '../__tests__/behavioral/CsvExtractor'
+import CsvExtractorImpl from '../CsvExtractor'
 
 export class SpyCsvExtractor extends CsvExtractorImpl {
     public constructor(csvPath: string) {

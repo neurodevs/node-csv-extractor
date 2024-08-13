@@ -3,8 +3,8 @@ import AbstractSpruceTest, {
     assert,
     generateId,
 } from '@sprucelabs/test-utils'
+import CsvExtractorImpl from '../../CsvExtractor'
 import { SpyCsvExtractor } from '../../testDoubles/SpyCsvExtractor'
-import CsvExtractorImpl from './CsvExtractor'
 
 export default class CsvExtractorTest extends AbstractSpruceTest {
     // @ts-ignore
