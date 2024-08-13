@@ -65,7 +65,7 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
         delete CsvExtractorImpl.Class
     }
 
-    private static CsvExtractor(csvPath?: string | null) {
+    private static CsvExtractor(csvPath?: string) {
         return CsvExtractorImpl.Create(
             csvPath ?? this.csvPath
         ) as SpyCsvExtractor
