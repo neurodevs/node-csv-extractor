@@ -14,7 +14,13 @@ export default class CsvExtractorImpl implements CsvExtractor {
 
     public static async Create(csvPath: string) {
         this.assertOptions(csvPath)
-        const csvData = await this.loadCsvData(csvPath)
+
+        const csvData = await this.loadCsvData(csvPath).catch((error) => {
+            throw new Error(
+                `LOAD_CSV_FAILED: "${csvPath}"!\n\nOriginal error:\n\n${error}`
+            )
+        })
+
         return new (this.Class ?? this)(csvPath, csvData)
     }
 

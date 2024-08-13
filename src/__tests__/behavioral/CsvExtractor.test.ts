@@ -55,6 +55,18 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
     }
 
     @test()
+    protected static async throwsIfLoadCsvFails() {
+        SpyCsvExtractor.shouldThrow = true
+
+        const errorMatcher = `LOAD_CSV_FAILED: "${this.csvPath}"!`
+
+        await assert.doesThrowAsync(
+            async () => await this.CsvExtractor(),
+            errorMatcher
+        )
+    }
+
+    @test()
     protected static async usesProvidedCsvPath() {
         const csvPath = this.extractor.getCsvPath()
         assert.isEqual(csvPath, this.csvPath)
@@ -91,13 +103,18 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
     private static setTestDouble() {
         this.fakeMethods()
         CsvExtractorImpl.Class = SpyCsvExtractor
+        SpyCsvExtractor.shouldThrow = false
     }
 
     private static fakeMethods() {
         // @ts-ignore
         CsvExtractorImpl.assertOptions = (_csvPath: string) => {}
         // @ts-ignore
-        CsvExtractorImpl.loadCsvData = async (_csvPath: string) => {}
+        CsvExtractorImpl.loadCsvData = async (_csvPath: string) => {
+            if (SpyCsvExtractor.shouldThrow) {
+                throw new Error('Fake error!')
+            }
+        }
     }
 
     private static clearTestDouble() {
