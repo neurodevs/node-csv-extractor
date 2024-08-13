@@ -5,7 +5,7 @@ import AbstractSpruceTest, {
     generateId,
 } from '@sprucelabs/test-utils'
 import csvParser from 'csv-parser'
-import CsvExtractorImpl, { CsvData } from '../../CsvExtractor'
+import CsvExtractorImpl, { CsvData, ExtractionRule } from '../../CsvExtractor'
 import { SpyCsvExtractor } from '../../testDoubles/SpyCsvExtractor'
 
 export default class CsvExtractorTest extends AbstractSpruceTest {
@@ -94,15 +94,22 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
         assert.isEqualDeep(csvData, this.dummyExtractor.getCsvData())
     }
 
-    @test()
-    protected static async extractReturnsCorrectColumn() {
+    @test('extractReturnsCorrectRow: column_3', 3)
+    @test('extractReturnsCorrectColumn: column_2', 2)
+    @test('extractReturnsCorrectColumn: column_1', 1)
+    protected static async extractReturnsCorrectColumn(columnNum: number) {
         this.clearFakeMethods()
 
         const realExtractor = await this.CsvExtractor(this.testCsvPath)
 
-        const csvData = realExtractor.extract([
-            { column: 'column_1', value: '1' },
-        ])
+        const rules: ExtractionRule[] = [
+            {
+                column: `column_${columnNum}`,
+                value: `${columnNum}`,
+            },
+        ]
+
+        const csvData = realExtractor.extract(rules)
         assert.isEqualDeep(csvData, realExtractor.getCsvData().slice(0, 1))
     }
 
