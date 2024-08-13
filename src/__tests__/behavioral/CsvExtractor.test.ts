@@ -14,7 +14,12 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
         assert.isTruthy(this.extractor)
     }
 
-    private static CsvExtractor() {
-        return CsvExtractorImpl.Create()
+    @test()
+    protected static async throwsWithMissingRequiredOptions() {
+        assert.doesThrow(() => this.CsvExtractor(''))
+    }
+
+    private static CsvExtractor(csvPath?: string) {
+        return CsvExtractorImpl.Create(csvPath ?? 'aoidjf')
     }
 }
