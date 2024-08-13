@@ -34,23 +34,34 @@ export default class CsvExtractorImpl implements CsvExtractor {
     }
 
     protected static async loadCsvData(csvPath: string): Promise<CsvData> {
-        return new Promise((resolve, reject) => {
-            const data: CsvData[] = []
+        return await new Promise((resolve, reject) => {
+            const data: CsvData = []
             fs.createReadStream(csvPath)
                 .pipe(csvParser())
-                .on('data', (row) => data.push(row))
+                .on('data', (row: CsvRow) => data.push(row))
                 .on('end', () => resolve(data))
                 .on('error', (err) => reject(err))
         })
     }
 
-    public extract() {
-        return this.csvData
+    public extract(rules: ExtractionRule[]) {
+        return rules.length > 0 ? this.applyRules(rules) : this.csvData
+    }
+
+    private applyRules(rules: ExtractionRule[]) {
+        return this.csvData.filter((row) =>
+            rules.every((rule) => row[rule.column] === rule.value)
+        )
     }
 }
 
 export interface CsvExtractor {
-    extract(): CsvData
+    extract(rules: ExtractionRule[]): CsvData
+}
+
+export interface ExtractionRule {
+    column: string
+    value: string | number | boolean
 }
 
 export type CsvExtractorConstructor = new (
@@ -58,4 +69,6 @@ export type CsvExtractorConstructor = new (
     csvData: CsvData
 ) => CsvExtractor
 
-export type CsvData = Record<string, any>[]
+export type CsvData = CsvRow[]
+
+export type CsvRow = Record<string, string | number | boolean>
