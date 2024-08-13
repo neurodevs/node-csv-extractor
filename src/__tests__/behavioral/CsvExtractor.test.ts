@@ -85,6 +85,12 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
         assert.isEqualDeep(csvData, expectedCsvData)
     }
 
+    @test()
+    protected static async extractReturnsCsvDataWithNoRules() {
+        const csvData = this.extractor.extract()
+        assert.isEqualDeep(csvData, this.extractor.getCsvData())
+    }
+
     private static async loadCsv(csvPath: string) {
         return new Promise((resolve, reject) => {
             const data: any[] = []
@@ -132,6 +138,6 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
     private static async CsvExtractor(csvPath?: string) {
         return (await CsvExtractorImpl.Create(
             csvPath ?? this.csvPath
-        )) as Promise<SpyCsvExtractor>
+        )) as SpyCsvExtractor
     }
 }

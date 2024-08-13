@@ -5,9 +5,9 @@ export default class CsvExtractorImpl implements CsvExtractor {
     public static Class?: CsvExtractorConstructor
 
     protected csvPath: string
-    protected csvData: Record<string, any>
+    protected csvData: CsvData
 
-    protected constructor(csvPath: string, csvData: Record<string, any>) {
+    protected constructor(csvPath: string, csvData: CsvData) {
         this.csvPath = csvPath
         this.csvData = csvData
     }
@@ -33,21 +33,29 @@ export default class CsvExtractorImpl implements CsvExtractor {
         }
     }
 
-    protected static async loadCsvData(csvPath: string) {
+    protected static async loadCsvData(csvPath: string): Promise<CsvData> {
         return new Promise((resolve, reject) => {
-            const data: any[] = []
+            const data: CsvData[] = []
             fs.createReadStream(csvPath)
                 .pipe(csvParser())
                 .on('data', (row) => data.push(row))
                 .on('end', () => resolve(data))
                 .on('error', (err) => reject(err))
-        }) as Promise<Record<string, any>>
+        })
+    }
+
+    public extract() {
+        return this.csvData
     }
 }
 
-export interface CsvExtractor {}
+export interface CsvExtractor {
+    extract(): CsvData
+}
 
 export type CsvExtractorConstructor = new (
     csvPath: string,
-    csvData: Record<string, any>
+    csvData: CsvData
 ) => CsvExtractor
+
+export type CsvData = Record<string, any>[]

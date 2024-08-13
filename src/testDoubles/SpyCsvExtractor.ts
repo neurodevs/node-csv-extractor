@@ -1,9 +1,9 @@
-import CsvExtractorImpl from '../CsvExtractor'
+import CsvExtractorImpl, { CsvData } from '../CsvExtractor'
 
 export class SpyCsvExtractor extends CsvExtractorImpl {
     public static shouldThrow = false
 
-    public constructor(csvPath: string, csvData: Record<string, any>) {
+    public constructor(csvPath: string, csvData: CsvData) {
         super(csvPath, csvData)
     }
 
