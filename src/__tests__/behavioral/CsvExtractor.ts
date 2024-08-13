@@ -19,7 +19,7 @@ export default class CsvExtractorImpl implements CsvExtractor {
             throw new Error('Missing required options: csvPath!')
         }
         if (!fs.existsSync(csvPath)) {
-            throw new Error(`Csv file does not exist at path: ${csvPath}`)
+            throw new Error(`Csv file does not exist at path: ${csvPath}!`)
         }
     }
 }
