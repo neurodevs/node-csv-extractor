@@ -3,6 +3,7 @@ import AbstractSpruceTest, {
     assert,
     generateId,
 } from '@sprucelabs/test-utils'
+import { SpyCsvExtractor } from '../../testDoubles/SpyCsvExtractor'
 import CsvExtractorImpl from './CsvExtractor'
 
 export default class CsvExtractorTest extends AbstractSpruceTest {
@@ -61,15 +62,5 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
         return CsvExtractorImpl.Create(
             csvPath ?? this.csvPath
         ) as SpyCsvExtractor
-    }
-}
-
-class SpyCsvExtractor extends CsvExtractorImpl {
-    public constructor(csvPath: string) {
-        super(csvPath)
-    }
-
-    public getCsvPath() {
-        return this.csvPath
     }
 }
