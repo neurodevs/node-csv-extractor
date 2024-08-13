@@ -3,8 +3,7 @@ import fs from 'fs'
 export default class CsvExtractorImpl implements CsvExtractor {
     public static Class?: CsvExtractorConstructor
 
-    //@ts-ignore
-    private csvPath: string
+    protected csvPath: string
 
     protected constructor(csvPath: string) {
         this.csvPath = csvPath

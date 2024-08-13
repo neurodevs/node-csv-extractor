@@ -1,4 +1,8 @@
-import AbstractSpruceTest, { test, assert } from '@sprucelabs/test-utils'
+import AbstractSpruceTest, {
+    test,
+    assert,
+    generateId,
+} from '@sprucelabs/test-utils'
 import CsvExtractorImpl from './CsvExtractor'
 
 export default class CsvExtractorTest extends AbstractSpruceTest {
@@ -6,11 +10,14 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
     private static assertOptions = CsvExtractorImpl.assertOptions
 
     private static extractor: SpyCsvExtractor
+    private static csvPath: string
 
     protected static async beforeEach() {
         await super.beforeEach()
 
         this.setTestDouble()
+
+        this.csvPath = generateId()
 
         this.extractor = this.CsvExtractor()
     }
@@ -32,6 +39,12 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
         assert.doesThrow(() => this.CsvExtractor('aoidjaidfjhadf'))
     }
 
+    @test()
+    protected static async usesProvidedCsvPath() {
+        const csvPath = this.extractor.getCsvPath()
+        assert.isEqual(csvPath, this.csvPath)
+    }
+
     private static setTestDouble() {
         // @ts-ignore
         CsvExtractorImpl.assertOptions = (_csvPath: string) => {}
@@ -45,12 +58,18 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
     }
 
     private static CsvExtractor(csvPath?: string) {
-        return CsvExtractorImpl.Create(csvPath ?? 'aoidjf') as SpyCsvExtractor
+        return CsvExtractorImpl.Create(
+            csvPath ?? this.csvPath
+        ) as SpyCsvExtractor
     }
 }
 
 class SpyCsvExtractor extends CsvExtractorImpl {
     public constructor(csvPath: string) {
         super(csvPath)
+    }
+
+    public getCsvPath() {
+        return this.csvPath
     }
 }
