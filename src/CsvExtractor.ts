@@ -16,10 +16,10 @@ export default class CsvExtractorImpl implements CsvExtractor {
 
     protected static assertOptions(csvPath: string) {
         if (!csvPath) {
-            throw new Error('Missing required options: csvPath!')
+            throw new Error('MISSING_REQUIRED_OPTIONS: csvPath!')
         }
         if (!fs.existsSync(csvPath)) {
-            throw new Error(`Csv file does not exist at path: ${csvPath}!`)
+            throw new Error(`FILE_NOT_FOUND: "${csvPath}"!`)
         }
     }
 }

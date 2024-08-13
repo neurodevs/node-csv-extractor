@@ -19,7 +19,6 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
         this.setTestDouble()
 
         this.csvPath = generateId()
-
         this.extractor = this.CsvExtractor()
     }
 
@@ -31,13 +30,17 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
     @test()
     protected static async throwsWithMissingRequiredOptions() {
         this.clearTestDouble()
-        assert.doesThrow(() => this.CsvExtractor(''))
+        assert.doesThrow(() => this.CsvExtractor(''), this.optionsError)
     }
 
     @test()
     protected static async throwsIfCsvPathDoesNotExist() {
         this.clearTestDouble()
-        assert.doesThrow(() => this.CsvExtractor('aoidjaidfjhadf'))
+
+        const csvPath = generateId()
+        const errorMatcher = `${this.fileNotFoundError}: "${csvPath}"!`
+
+        assert.doesThrow(() => this.CsvExtractor(csvPath), errorMatcher)
     }
 
     @test()
@@ -45,6 +48,10 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
         const csvPath = this.extractor.getCsvPath()
         assert.isEqual(csvPath, this.csvPath)
     }
+
+    private static readonly optionsError = 'MISSING_REQUIRED_OPTIONS: csvPath!'
+
+    private static readonly fileNotFoundError = 'FILE_NOT_FOUND'
 
     private static setTestDouble() {
         // @ts-ignore
@@ -58,7 +65,7 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
         delete CsvExtractorImpl.Class
     }
 
-    private static CsvExtractor(csvPath?: string) {
+    private static CsvExtractor(csvPath?: string | null) {
         return CsvExtractorImpl.Create(
             csvPath ?? this.csvPath
         ) as SpyCsvExtractor
