@@ -1,14 +1,18 @@
+import fs from 'fs'
 import AbstractSpruceTest, {
     test,
     assert,
     generateId,
 } from '@sprucelabs/test-utils'
+import csvParser from 'csv-parser'
 import CsvExtractorImpl from '../../CsvExtractor'
 import { SpyCsvExtractor } from '../../testDoubles/SpyCsvExtractor'
 
 export default class CsvExtractorTest extends AbstractSpruceTest {
     // @ts-ignore
     private static assertOptions = CsvExtractorImpl.assertOptions
+    // @ts-ignore
+    private static loadCsvData = CsvExtractorImpl.loadCsvData
 
     private static extractor: SpyCsvExtractor
     private static csvPath: string
@@ -19,7 +23,7 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
         this.setTestDouble()
 
         this.csvPath = generateId()
-        this.extractor = this.CsvExtractor()
+        this.extractor = await this.CsvExtractor()
     }
 
     @test()
@@ -30,7 +34,11 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
     @test()
     protected static async throwsWithMissingRequiredOptions() {
         this.clearTestDouble()
-        assert.doesThrow(() => this.CsvExtractor(''), this.optionsError)
+
+        await assert.doesThrowAsync(
+            async () => await this.CsvExtractor(''),
+            this.optionsError
+        )
     }
 
     @test()
@@ -40,7 +48,10 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
         const csvPath = generateId()
         const errorMatcher = `${this.fileNotFoundError}: "${csvPath}"!`
 
-        assert.doesThrow(() => this.CsvExtractor(csvPath), errorMatcher)
+        await assert.doesThrowAsync(
+            async () => await this.CsvExtractor(csvPath),
+            errorMatcher
+        )
     }
 
     @test()
@@ -49,25 +60,61 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
         assert.isEqual(csvPath, this.csvPath)
     }
 
+    @test()
+    protected static async loadsCsvDataOnCreate() {
+        this.clearFakeMethods()
+
+        const csvPath = 'src/__tests__/testData/test.csv'
+        const extractor = await this.CsvExtractor(csvPath)
+        const csvData = extractor.getCsvData()
+
+        const expectedCsvData = await this.loadCsv(csvPath)
+
+        assert.isEqualDeep(csvData, expectedCsvData)
+    }
+
+    private static async loadCsv(csvPath: string) {
+        return new Promise((resolve, reject) => {
+            const data: any[] = []
+            fs.createReadStream(csvPath)
+                .pipe(csvParser())
+                .on('data', (row) => data.push(row))
+                .on('end', () => resolve(data))
+                .on('error', (err) => reject(err))
+        })
+    }
+
     private static readonly optionsError = 'MISSING_REQUIRED_OPTIONS: csvPath!'
 
     private static readonly fileNotFoundError = 'FILE_NOT_FOUND'
 
     private static setTestDouble() {
-        // @ts-ignore
-        CsvExtractorImpl.assertOptions = (_csvPath: string) => {}
+        this.fakeMethods()
         CsvExtractorImpl.Class = SpyCsvExtractor
     }
 
-    private static clearTestDouble() {
+    private static fakeMethods() {
         // @ts-ignore
-        CsvExtractorImpl.assertOptions = this.assertOptions
+        CsvExtractorImpl.assertOptions = (_csvPath: string) => {}
+        // @ts-ignore
+        CsvExtractorImpl.loadCsvData = async (_csvPath: string) => {}
+    }
+
+    private static clearTestDouble() {
+        this.clearFakeMethods()
         delete CsvExtractorImpl.Class
     }
 
-    private static CsvExtractor(csvPath?: string) {
-        return CsvExtractorImpl.Create(
+    private static clearFakeMethods() {
+        // @ts-ignore
+        CsvExtractorImpl.assertOptions = this.assertOptions
+        // @ts-ignore
+        CsvExtractorImpl.loadCsvData = this.loadCsvData
+    }
+
+    private static async CsvExtractor(csvPath?: string) {
+        return (await CsvExtractorImpl.Create(
             csvPath ?? this.csvPath
-        ) as SpyCsvExtractor
+        )) as Promise<SpyCsvExtractor>
     }
 }
