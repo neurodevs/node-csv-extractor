@@ -48,7 +48,7 @@ export default class CsvExtractorImpl implements CsvExtractor {
         return this.applyRules(rules)
     }
 
-    private applyRules(rules: ExtractionRule[]): Record<string, any> {
+    private applyRules(rules: ExtractionRule[]) {
         const result: Record<string, any> = {}
 
         rules.forEach((rule) => {
