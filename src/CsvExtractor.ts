@@ -56,7 +56,7 @@ export default class CsvExtractorImpl implements CsvExtractor {
                 (row) => row[rule.column] === rule.value
             )
             if (matchingRow) {
-                result[rule.column] = matchingRow[rule.extract]
+                result[rule.value] = matchingRow[rule.extract]
             }
         })
 
@@ -70,7 +70,7 @@ export interface CsvExtractor {
 
 export interface ExtractionRule {
     column: string
-    value: string | number | boolean
+    value: string
     extract: string
 }
 

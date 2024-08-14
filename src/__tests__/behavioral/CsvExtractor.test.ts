@@ -109,7 +109,7 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
         const result = realExtractor.extract(rules)
 
         const expected = {
-            [`column_${columnNum}`]: columnNum,
+            [columnNum]: columnNum,
         }
 
         assert.isEqualDeep(result, expected)
