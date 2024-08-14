@@ -94,10 +94,10 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
         assert.isEqualDeep(csvData, this.dummyExtractor.getCsvData())
     }
 
-    @test('extractReturnsCorrectRow: column_3', '3')
-    @test('extractReturnsCorrectRow: column_2', '2')
-    @test('extractReturnsCorrectRow: column_1', '1')
-    protected static async extractReturnsCorrectColumn(columnNum: number) {
+    @test('extractReturnsCorrectValue: column_3', '3')
+    @test('extractReturnsCorrectValue: column_2', '2')
+    @test('extractReturnsCorrectValue: column_1', '1')
+    protected static async extractReturnsCorrectValue(columnNum: number) {
         this.clearFakeMethods()
 
         const realExtractor = await this.CsvExtractor(this.testCsvPath)
