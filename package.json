@@ -1,5 +1,5 @@
 {
-  "name": "node-csv-extractor",
+  "name": "@neurodevs/node-csv-extractor",
   "version": "0.0.1",
   "repository": "https://github.com/neurodevs/node-csv-extractor.git",
   "scripts": {
