@@ -5,8 +5,9 @@ import AbstractSpruceTest, {
     generateId,
 } from '@sprucelabs/test-utils'
 import csvParser from 'csv-parser'
-import CsvExtractorImpl, { CsvData, ExtractionRule } from '../../CsvExtractor'
+import CsvExtractorImpl from '../../CsvExtractor'
 import SpyCsvExtractor from '../../testDoubles/SpyCsvExtractor'
+import { CsvData, ExtractionRule } from '../../types'
 
 export default class CsvExtractorTest extends AbstractSpruceTest {
     // @ts-ignore

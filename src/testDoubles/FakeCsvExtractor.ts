@@ -1,4 +1,4 @@
-import { CsvExtractor, ExtractedResult, ExtractionRule } from '../CsvExtractor'
+import { CsvExtractor, ExtractionRule, ExtractedResult } from '../types'
 
 export default class FakeCsvExtractor implements CsvExtractor {
     public wasExtractCalled = false
