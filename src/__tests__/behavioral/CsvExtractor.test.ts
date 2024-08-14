@@ -109,24 +109,6 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
             },
         ]
 
-        // void [
-        //     {
-        //         column: `space by feature`,
-        //         value: `pre-rest`,
-        //         extract: 'Mean',
-        //     },
-        //     {
-        //         column: `space by feature`,
-        //         value: `post-rest`,
-        //         extract: 'Mean',
-        //     },
-        // ]
-
-        // void {
-        //     'pre-rest': 0.598273,
-        //     'post-rest': 0.873851,
-        // }
-
         const result = realExtractor.extract(rules)
 
         const expected = {
