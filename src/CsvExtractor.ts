@@ -48,21 +48,32 @@ export default class CsvExtractorImpl implements CsvExtractor {
         return rules.length > 0 ? this.applyRules(rules) : this.csvData
     }
 
-    private applyRules(rules: ExtractionRule[]) {
-        return this.csvData.filter((row) =>
-            rules.every((rule) => row[rule.column] === rule.value)
-        )
+    private applyRules(rules: ExtractionRule[]): Record<string, any> {
+        const result: Record<string, any> = {}
+
+        rules.forEach((rule) => {
+            const matchingRow = this.csvData.find(
+                (row) => row[rule.column] === rule.value
+            )
+            if (matchingRow) {
+                result[rule.column] = rule.value
+            }
+        })
+
+        return result
     }
 }
 
 export interface CsvExtractor {
-    extract(rules: ExtractionRule[]): CsvData
+    extract(rules: ExtractionRule[]): ExtractedResult
 }
 
 export interface ExtractionRule {
     column: string
     value: string | number | boolean
 }
+
+export type ExtractedResult = Record<string, any>
 
 export type CsvExtractorConstructor = new (
     csvPath: string,

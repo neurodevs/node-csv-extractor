@@ -43,7 +43,7 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
 
         await assert.doesThrowAsync(
             async () => await this.CsvExtractor(''),
-            this.optionsError
+            'MISSING_REQUIRED_OPTIONS: csvPath!'
         )
     }
 
@@ -52,7 +52,7 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
         this.clearFakeMethods()
 
         const csvPath = generateId()
-        const errorMatcher = `${this.fileNotFoundError}: "${csvPath}"!`
+        const errorMatcher = `FILE_NOT_FOUND: "${csvPath}"!`
 
         await assert.doesThrowAsync(
             async () => await this.CsvExtractor(csvPath),
@@ -94,9 +94,9 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
         assert.isEqualDeep(csvData, this.dummyExtractor.getCsvData())
     }
 
-    @test('extractReturnsCorrectRow: column_3', 3)
-    @test('extractReturnsCorrectColumn: column_2', 2)
-    @test('extractReturnsCorrectColumn: column_1', 1)
+    @test('extractReturnsCorrectRow: column_3', '3')
+    @test('extractReturnsCorrectRow: column_2', '2')
+    @test('extractReturnsCorrectRow: column_1', '1')
     protected static async extractReturnsCorrectColumn(columnNum: number) {
         this.clearFakeMethods()
 
@@ -109,8 +109,31 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
             },
         ]
 
-        const csvData = realExtractor.extract(rules)
-        assert.isEqualDeep(csvData, realExtractor.getCsvData().slice(0, 1))
+        // void [
+        //     {
+        //         column: `space by feature`,
+        //         value: `pre-rest`,
+        //         extract: 'Mean',
+        //     },
+        //     {
+        //         column: `space by feature`,
+        //         value: `post-rest`,
+        //         extract: 'Mean',
+        //     },
+        // ]
+
+        // void {
+        //     'pre-rest': 0.598273,
+        //     'post-rest': 0.873851,
+        // }
+
+        const result = realExtractor.extract(rules)
+
+        const expected = {
+            [`column_${columnNum}`]: columnNum,
+        }
+
+        assert.isEqualDeep(result, expected)
     }
 
     private static async loadCsv(csvPath: string) {
@@ -123,10 +146,6 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
                 .on('error', (err) => reject(err))
         }) as Promise<CsvData>
     }
-
-    private static readonly optionsError = 'MISSING_REQUIRED_OPTIONS: csvPath!'
-
-    private static readonly fileNotFoundError = 'FILE_NOT_FOUND'
 
     private static setTestDouble() {
         CsvExtractorImpl.Class = SpyCsvExtractor
