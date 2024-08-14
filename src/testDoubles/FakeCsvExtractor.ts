@@ -5,6 +5,7 @@ export default class FakeCsvExtractor implements CsvExtractor {
     public extractCalledWith: ExtractionRule[][] = []
 
     public extract(rules: ExtractionRule[]) {
+        this.wasExtractCalled = true
         this.extractCalledWith.push(rules)
         return {} as ExtractedResult
     }
