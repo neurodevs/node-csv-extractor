@@ -102,10 +102,13 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
 
         const realExtractor = await this.CsvExtractor(this.testCsvPath)
 
+        const column = `column_${columnNum}`
+
         const rules: ExtractionRule[] = [
             {
-                column: `column_${columnNum}`,
+                column,
                 value: `${columnNum}`,
+                extract: column,
             },
         ]
 
