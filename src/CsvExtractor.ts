@@ -45,7 +45,7 @@ export default class CsvExtractorImpl implements CsvExtractor {
     }
 
     public extract(rules: ExtractionRule[]) {
-        return rules.length > 0 ? this.applyRules(rules) : this.csvData
+        return this.applyRules(rules)
     }
 
     private applyRules(rules: ExtractionRule[]): Record<string, any> {
