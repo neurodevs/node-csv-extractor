@@ -1,6 +1,7 @@
 {
   "name": "@neurodevs/node-csv-extractor",
-  "version": "0.0.4",
+  "version": "0.0.5",
+  "main": "build/index.js",
   "repository": "https://github.com/neurodevs/node-csv-extractor.git",
   "scripts": {
     "build.ci": "yarn run build.tsc && yarn run build.resolve-paths && yarn run lint",
