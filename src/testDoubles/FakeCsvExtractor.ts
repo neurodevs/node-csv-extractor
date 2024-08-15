@@ -1,7 +1,7 @@
 import {
     CsvExtractor,
     ExtractionRule,
-    ExtractedResult,
+    ExtractedRecord,
     CsvData,
 } from '../types'
 
@@ -10,7 +10,7 @@ export default class FakeCsvExtractor implements CsvExtractor {
     public csvData: CsvData
     public wasExtractCalled = false
     public extractCalledWith: ExtractionRule[][] = []
-    private fakedResult: ExtractedResult = {}
+    private fakedRecord: ExtractedRecord = {}
 
     public constructor(csvPath: string, csvData: CsvData) {
         this.csvPath = csvPath
@@ -20,10 +20,10 @@ export default class FakeCsvExtractor implements CsvExtractor {
     public extract(rules: ExtractionRule[]) {
         this.wasExtractCalled = true
         this.extractCalledWith.push(rules)
-        return this.fakedResult
+        return this.fakedRecord
     }
 
-    public fakeResult(result: ExtractedResult) {
-        this.fakedResult = result
+    public fakeRecord(record: ExtractedRecord) {
+        this.fakedRecord = record
     }
 }

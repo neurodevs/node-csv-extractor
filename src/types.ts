@@ -1,5 +1,5 @@
 export interface CsvExtractor {
-    extract(rules: ExtractionRule[]): ExtractedResult
+    extract(rules: ExtractionRule[]): ExtractedRecord
 }
 
 export interface ExtractionRule {
@@ -8,7 +8,7 @@ export interface ExtractionRule {
     extract: string
 }
 
-export type ExtractedResult = Record<string, any>
+export type ExtractedRecord = Record<string, string>
 
 export type CsvExtractorConstructor = new (
     csvPath: string,
@@ -17,4 +17,4 @@ export type CsvExtractorConstructor = new (
 
 export type CsvData = CsvRow[]
 
-export type CsvRow = Record<string, string | number | boolean>
+export type CsvRow = Record<string, string>
