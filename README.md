@@ -1,5 +1,5 @@
 # node-csv-extractor
-Extract rows, columns, and cells from CSV files on Node
+Extract data from CSV files using user-defined rules.
 
 ## Installation
 
@@ -16,20 +16,20 @@ const extractor = await CsvExtractorImpl.Create('/path/to/csv')
 const extractedRecord = extractor.extract([
     {
         column: 'The column you want to search',
-        value: 'The value to match in the specified column',
-        extract: 'The column from which you want to extract data'
+        value: 'The value to match in the column',
+        extract: 'The column to extract data from',
     },
     {
-        column: ...,
-        value: ...,
-        extract: ...
+        column: 'Another column to search',
+        value: 'Another value to match',
+        extract: 'Another column to extract',
     }
 ])
 ```
 
 ## Example use case for a stroboscopic session with EEG
 
-Assuming that you have a CSV file like this:
+### Example CSV Format
 
 | segment-name    | mean-alpha-band-power |
 |-----------------|-----------------------|
@@ -40,7 +40,7 @@ Assuming that you have a CSV file like this:
 | eyes-closed-5   | [ Number ]           |
 | eyes-open-5     | [ Number ]           |
 
-Then, you can use the `CsvExtractorImpl` class like this:
+### Example Code
 
 ```typescript
 import { CsvExtractorImpl } from '@neurodevs/node-csv-extractor'
@@ -53,9 +53,9 @@ const numTrials = 5
 
 for (let i = 1; i <= numTrials; i++) {
     rules.push({
-        column: 'segment-name',            // The column you want to search
-        value: `eyes-closed-${i}`,         // The value to match in the specified column
-        extract: 'mean-alpha-band-power',  // The column from which you want to extract data
+        column: 'segment-name',            // The column to search
+        value: `eyes-closed-${i}`,         // The value to match
+        extract: 'mean-alpha-band-power',  // The column to extract
     })
     rules.push({
         column: 'segment-name',
@@ -66,7 +66,7 @@ for (let i = 1; i <= numTrials; i++) {
 
 const extractedRecord = extractor.extract(rules)
 
-//  Value of extractedRecord
+//  Example value of extractedRecord:
 //
 //  {
 //      "eyes-closed-1": 12.345,
@@ -81,3 +81,13 @@ const extractedRecord = extractor.extract(rules)
 //      "eyes-open-5": ...
 //  },
 ```
+### Example Explanation
+
+#### Async Static Creation Method
+`await CsvExtractorImpl.Create('/path/to/csv')` asynchronously creates an instance of CsvExtractorImpl, which automatically loads the CSV file at the provided path.
+
+#### Extraction Rules
+- The `ExtractionRule[]` type specifies which data to extract from the CSV. Each rule searches for a specific value in a specified column and extracts data from another column (or the same column) in the matched row.
+
+#### Eyes Open/Closed Trials
+- The `for` loop creates rules for multiple trials, extracting data for both "eyes-closed" and "eyes-open" segments.
