@@ -8,7 +8,7 @@ import {
 export default class FakeCsvExtractor implements CsvExtractor {
     public csvPath: string
     public csvData: CsvData
-    public passedRules?: ExtractionRule[]
+    public passedRules: ExtractionRule[][] = []
     private fakedRecord: ExtractedRecord = {}
 
     public constructor(csvPath: string, csvData: CsvData) {
@@ -17,7 +17,7 @@ export default class FakeCsvExtractor implements CsvExtractor {
     }
 
     public extract(rules: ExtractionRule[]) {
-        this.passedRules = rules
+        this.passedRules.push(rules)
         return this.fakedRecord
     }
 

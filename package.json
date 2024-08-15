@@ -1,6 +1,6 @@
 {
   "name": "@neurodevs/node-csv-extractor",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "main": "build/index.js",
   "repository": "https://github.com/neurodevs/node-csv-extractor.git",
   "scripts": {
