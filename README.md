@@ -29,10 +29,18 @@ const extractedRecord = extractor.extract([
 
 ## Example use case for a stroboscopic session with EEG
 
-Assumes that you have a CSV file with columns:
+Assuming that you have a CSV file like this:
 
-- `segment-name`
-- `mean-alpha-band-power`
+| segment-name    | mean-alpha-band-power |
+|-----------------|-----------------------|
+| eyes-closed-1   | [ Number ]           |
+| eyes-open-1     | [ Number ]           |
+| eyes-closed-2   | [ Number ]           |
+| ...             | ...                    |
+| eyes-closed-5   | [ Number ]           |
+| eyes-open-5     | [ Number ]           |
+
+Then, you can use the `CsvExtractorImpl` class like this:
 
 ```typescript
 import { CsvExtractorImpl } from '@neurodevs/node-csv-extractor'
