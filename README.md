@@ -66,7 +66,7 @@ for (let i = 1; i <= numTrials; i++) {
 
 const extractedRecord = extractor.extract(rules)
 
-// Value of extractedRecord
+//  Value of extractedRecord
 //
 //  {
 //      "eyes-closed-1": 12.345,
