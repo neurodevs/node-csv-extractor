@@ -89,7 +89,7 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
     @test('extractReturnsCorrectValue: column_3', '3')
     @test('extractReturnsCorrectValue: column_2', '2')
     @test('extractReturnsCorrectValue: column_1', '1')
-    protected static async extractReturnsCorrectValue(columnNum: number) {
+    protected static async extractReturnsCorrectValue(columnNum: string) {
         this.clearFakeMethods()
 
         const realExtractor = await this.CsvExtractor(this.testCsvPath)

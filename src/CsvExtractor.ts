@@ -43,6 +43,7 @@ export default class CsvExtractorImpl implements CsvExtractor {
     protected static async loadCsvData(csvPath: string): Promise<CsvData> {
         return await new Promise((resolve, reject) => {
             const data: CsvData = []
+
             fs.createReadStream(csvPath)
                 .pipe(csvParser())
                 .on('data', (row: CsvRow) => data.push(row))
@@ -56,17 +57,22 @@ export default class CsvExtractorImpl implements CsvExtractor {
     }
 
     private applyRules(rules: ExtractionRule[]) {
-        const result: Record<string, any> = {}
+        const record: Record<string, string> = {}
 
         rules.forEach((rule) => {
-            const matchingRow = this.csvData.find(
-                (row) => row[rule.column] === rule.value
-            )
+            const matchingRow = this.findMatchingRow(rule)
+
             if (matchingRow) {
-                result[rule.value] = matchingRow[rule.extract]
+                const { value, extract } = rule
+                record[value] = matchingRow[extract]
             }
         })
 
-        return result
+        return record
+    }
+
+    private findMatchingRow(rule: ExtractionRule) {
+        const { column, value } = rule
+        return this.csvData.find((row) => row[column] === value)
     }
 }
