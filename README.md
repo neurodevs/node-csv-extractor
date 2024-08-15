@@ -33,12 +33,12 @@ const extractedRecord = extractor.extract([
 
 | segment-name    | mean-alpha-band-power |
 |-----------------|-----------------------|
-| eyes-closed-1   | [ Number ]           |
-| eyes-open-1     | [ Number ]           |
-| eyes-closed-2   | [ Number ]           |
-| ...             | ...                    |
-| eyes-closed-5   | [ Number ]           |
-| eyes-open-5     | [ Number ]           |
+| eyes-closed-1   | 12.345                |
+| eyes-open-1     | 10.987                |
+| eyes-closed-2   | [ Number ]            |
+| ...             | ...                   |
+| eyes-closed-5   | [ Number ]            |
+| eyes-open-5     | [ Number ]            |
 
 ### Example Code
 
@@ -84,10 +84,10 @@ const extractedRecord = extractor.extract(rules)
 ### Example Explanation
 
 #### Async Static Creation Method
-`await CsvExtractorImpl.Create('/path/to/csv')` asynchronously creates an instance of CsvExtractorImpl, which automatically loads the CSV file at the provided path.
-
-#### Extraction Rules
-- The `ExtractionRule[]` type specifies which data to extract from the CSV. Each rule searches for a specific value in a specified column and extracts data from another column (or the same column) in the matched row.
+- `await CsvExtractorImpl.Create('/path/to/csv')` asynchronously creates an instance of CsvExtractorImpl, which automatically loads the CSV file at the provided path.
 
 #### Eyes Open/Closed Trials
 - The `for` loop creates rules for multiple trials, extracting data for both "eyes-closed" and "eyes-open" segments.
+
+#### Extraction Rules
+- `extractor.extract(rules)` defines the criteria for extracting data from a CSV file. Each rule specifies a target value to search for in a particular column and determines which column's data to extract from the matching row.
