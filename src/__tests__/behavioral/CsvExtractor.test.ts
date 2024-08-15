@@ -104,13 +104,32 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
             },
         ]
 
-        const result = realExtractor.extract(rules)
+        const record = realExtractor.extract(rules)
 
         const expected = {
-            [columnNum]: columnNum,
+            [columnNum]: Number(columnNum),
         }
 
-        assert.isEqualDeep(result, expected)
+        assert.isEqualDeep(record, expected)
+    }
+
+    @test()
+    protected static async returnsNumericValuesAsNumbers() {
+        this.clearFakeMethods()
+
+        const realExtractor = await this.CsvExtractor(this.testCsvPath)
+
+        const rules: ExtractionRule[] = [
+            {
+                column: 'column_1',
+                value: '1',
+                extract: 'column_1',
+            },
+        ]
+
+        const record = realExtractor.extract(rules)
+
+        Object.values(record).forEach((value) => assert.isNumber(value))
     }
 
     private static async loadCsv(csvPath: string) {

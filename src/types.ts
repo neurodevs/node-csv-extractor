@@ -10,7 +10,7 @@ export interface ExtractionRule {
     extract: string
 }
 
-export type ExtractedRecord = Record<string, string>
+export type ExtractedRecord = Record<string, string | number>
 
 export type CsvExtractorConstructor = new (
     csvPath: string,

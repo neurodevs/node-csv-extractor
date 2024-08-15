@@ -5,6 +5,7 @@ import {
     CsvExtractor,
     CsvExtractorConstructor,
     CsvRow,
+    ExtractedRecord,
     ExtractionRule,
 } from './types'
 
@@ -57,14 +58,20 @@ export default class CsvExtractorImpl implements CsvExtractor {
     }
 
     private applyRules(rules: ExtractionRule[]) {
-        const record: Record<string, string> = {}
+        const record: ExtractedRecord = {}
 
         rules.forEach((rule) => {
             const matchingRow = this.findMatchingRow(rule)
 
             if (matchingRow) {
                 const { value, extract } = rule
-                record[value] = matchingRow[extract]
+
+                const extractedValue = matchingRow[extract]
+                const numericValue = Number(extractedValue)
+
+                record[value] = isNaN(numericValue)
+                    ? extractedValue
+                    : numericValue
             }
         })
 
