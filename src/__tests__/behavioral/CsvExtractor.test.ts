@@ -75,17 +75,14 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
 
     @test()
     protected static async usesProvidedCsvPath() {
-        const csvPath = this.dummyExtractor.getCsvPath()
-        assert.isEqual(csvPath, this.csvPath)
+        assert.isEqual(this.dummyExtractor.csvPath, this.csvPath)
     }
 
     @test()
     protected static async loadsCsvDataOnCreate() {
         this.clearFakeMethods()
 
-        const extractor = await this.CsvExtractor(this.testCsvPath)
-        const csvData = extractor.getCsvData()
-
+        const { csvData } = await this.CsvExtractor(this.testCsvPath)
         assert.isEqualDeep(csvData, this.testCsvData)
     }
 

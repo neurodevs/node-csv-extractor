@@ -1,4 +1,6 @@
 export interface CsvExtractor {
+    csvPath: string
+    csvData: CsvData
     extract(rules: ExtractionRule[]): ExtractedRecord
 }
 

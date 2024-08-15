@@ -11,8 +11,8 @@ import {
 export default class CsvExtractorImpl implements CsvExtractor {
     public static Class?: CsvExtractorConstructor
 
-    protected csvPath: string
-    protected csvData: CsvData
+    public csvPath: string
+    public csvData: CsvData
 
     protected constructor(csvPath: string, csvData: CsvData) {
         this.csvPath = csvPath
