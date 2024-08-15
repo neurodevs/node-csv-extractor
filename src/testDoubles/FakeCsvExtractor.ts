@@ -10,6 +10,7 @@ export default class FakeCsvExtractor implements CsvExtractor {
     public csvData: CsvData
     public wasExtractCalled = false
     public extractCalledWith: ExtractionRule[][] = []
+    private fakedResult: ExtractedResult = {}
 
     public constructor(csvPath: string, csvData: CsvData) {
         this.csvPath = csvPath
@@ -19,6 +20,10 @@ export default class FakeCsvExtractor implements CsvExtractor {
     public extract(rules: ExtractionRule[]) {
         this.wasExtractCalled = true
         this.extractCalledWith.push(rules)
-        return {} as ExtractedResult
+        return this.fakedResult
+    }
+
+    public fakeResult(result: ExtractedResult) {
+        this.fakedResult = result
     }
 }
