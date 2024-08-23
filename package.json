@@ -26,11 +26,11 @@
     "watch.tsc": "tsc -w"
   },
   "devDependencies": {
-    "@sprucelabs/jest-json-reporter": "^8.0.193",
-    "@sprucelabs/resolve-path-aliases": "^2.0.170",
+    "@sprucelabs/jest-json-reporter": "^8.0.248",
+    "@sprucelabs/resolve-path-aliases": "^2.0.225",
     "@sprucelabs/test": "^9.0.41",
-    "@sprucelabs/test-utils": "^5.1.129",
-    "@types/node": "^22.2.0",
+    "@sprucelabs/test-utils": "^5.1.188",
+    "@types/node": "^22.5.0",
     "chokidar-cli": "^3.0.0",
     "eslint": "^9.9.0",
     "eslint-config-spruce": "^11.2.26",
