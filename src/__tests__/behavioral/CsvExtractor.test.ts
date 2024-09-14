@@ -13,7 +13,7 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
     // @ts-ignore
     private static assertOptions = CsvExtractorImpl.assertOptions
     // @ts-ignore
-    private static loadCsvData = CsvExtractorImpl.loadCsvData
+    private static loadCsvData = CsvExtractorImpl.loadCsv
 
     private static testCsvData: CsvData
     private static csvPath: string
@@ -152,7 +152,7 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
         // @ts-ignore
         CsvExtractorImpl.assertOptions = (_csvPath: string) => {}
         // @ts-ignore
-        CsvExtractorImpl.loadCsvData = async (_csvPath: string) => {
+        CsvExtractorImpl.loadCsv = async (_csvPath: string) => {
             if (SpyCsvExtractor.shouldThrow) {
                 throw new Error('Fake error!')
             }
@@ -163,7 +163,7 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
         // @ts-ignore
         CsvExtractorImpl.assertOptions = this.assertOptions
         // @ts-ignore
-        CsvExtractorImpl.loadCsvData = this.loadCsvData
+        CsvExtractorImpl.loadCsv = this.loadCsvData
     }
 
     private static async CsvExtractor(csvPath?: string) {

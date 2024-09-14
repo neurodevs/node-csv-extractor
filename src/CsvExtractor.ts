@@ -23,7 +23,7 @@ export default class CsvExtractorImpl implements CsvExtractor {
     public static async Create(csvPath: string) {
         this.assertOptions(csvPath)
 
-        const csvData = await this.loadCsvData(csvPath).catch((error) => {
+        const csvData = await this.loadCsv(csvPath).catch((error) => {
             throw new Error(
                 `LOAD_CSV_FAILED: "${csvPath}"!\n\nOriginal error:\n\n${error}`
             )
@@ -41,7 +41,7 @@ export default class CsvExtractorImpl implements CsvExtractor {
         }
     }
 
-    protected static async loadCsvData(csvPath: string): Promise<CsvData> {
+    protected static async loadCsv(csvPath: string): Promise<CsvData> {
         return await new Promise((resolve, reject) => {
             const data: CsvData = []
 
