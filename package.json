@@ -64,6 +64,8 @@
     }
   },
   "dependencies": {
+    "@neurodevs/node-csv-loader": "^0.1.1",
+    "@sprucelabs/schema": "^30.0.395",
     "csv-parser": "^3.0.0"
   }
 }
