@@ -1,31 +1,24 @@
 import { assertOptions } from '@sprucelabs/schema'
-import { CsvLoaderImpl } from '@neurodevs/node-csv-loader'
-import {
-    CsvData,
-    CsvExtractor,
-    CsvExtractorConstructor,
-    ExtractedRecord,
-    ExtractionRule,
-} from './types'
+import { CsvLoaderImpl, CsvRow } from '@neurodevs/node-csv-loader'
 
 export default class CsvExtractorImpl implements CsvExtractor {
     public static Class?: CsvExtractorConstructor
 
-    public csvPath: string
-    public csvData: CsvData
+    public path: string
+    public data: CsvRow[]
 
-    protected constructor(csvPath: string, csvData: CsvData) {
-        this.csvPath = csvPath
-        this.csvData = csvData
+    protected constructor(path: string, data: CsvRow[]) {
+        this.path = path
+        this.data = data
     }
 
-    public static async Create(csvPath: string) {
-        assertOptions({ csvPath }, ['csvPath'])
+    public static async Create(path: string) {
+        assertOptions({ path }, ['path'])
 
         const loader = CsvLoaderImpl.Create({ shouldValidatePath: false })
-        const csvData = await loader.load(csvPath)
+        const csvData = await loader.load(path)
 
-        return new (this.Class ?? this)(csvPath, csvData)
+        return new (this.Class ?? this)(path, csvData)
     }
 
     public extract(rules: ExtractionRule[]) {
@@ -55,6 +48,25 @@ export default class CsvExtractorImpl implements CsvExtractor {
 
     private findMatchingRow(rule: ExtractionRule) {
         const { column, value } = rule
-        return this.csvData.find((row) => row[column] === value)
+        return this.data.find((row: CsvRow) => row[column] === value)
     }
 }
+
+export interface CsvExtractor {
+    path: string
+    data: CsvRow[]
+    extract(rules: ExtractionRule[]): ExtractedRecord
+}
+
+export type CsvExtractorConstructor = new (
+    path: string,
+    data: CsvRow[]
+) => CsvExtractor
+
+export interface ExtractionRule {
+    column: string
+    value: string
+    extract: string
+}
+
+export type ExtractedRecord = Record<string, string | number>

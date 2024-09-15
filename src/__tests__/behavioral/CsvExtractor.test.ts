@@ -2,15 +2,14 @@ import AbstractSpruceTest, {
     test,
     assert,
     errorAssert,
+    generateId,
 } from '@sprucelabs/test-utils'
 import { CsvLoaderImpl, FakeCsvLoader } from '@neurodevs/node-csv-loader'
-import CsvExtractorImpl from '../../CsvExtractor'
+import CsvExtractorImpl, { ExtractionRule } from '../../CsvExtractor'
 import SpyCsvExtractor from '../../testDoubles/SpyCsvExtractor'
-import { ExtractionRule } from '../../types'
 
 export default class CsvExtractorTest extends AbstractSpruceTest {
-    private static testCsvPath: string
-
+    private static csvPath: string
     private static extractor: SpyCsvExtractor
 
     protected static async beforeEach() {
@@ -18,7 +17,7 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
 
         this.setTestDoubles()
 
-        this.testCsvPath = 'src/__tests__/testData/test.csv'
+        this.csvPath = generateId()
         this.extractor = await this.CsvExtractor()
     }
 
@@ -32,27 +31,25 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
         // @ts-ignore
         const err = await assert.doesThrowAsync(() => CsvExtractorImpl.Create())
         errorAssert.assertError(err, 'MISSING_PARAMETERS', {
-            parameters: ['csvPath'],
+            parameters: ['path'],
         })
     }
 
     @test()
     protected static async usesProvidedCsvPath() {
-        assert.isEqual(this.extractor.csvPath, this.testCsvPath)
+        assert.isEqual(this.extractor.path, this.csvPath)
     }
 
     @test()
     protected static async loadsCsvDataOnCreate() {
-        const { csvData } = await this.CsvExtractor(this.testCsvPath)
-        assert.isEqualDeep(csvData, this.testData)
+        const { data } = await this.CsvExtractor(this.csvPath)
+        assert.isEqualDeep(data, this.testData)
     }
 
     @test('extractReturnsCorrectValue: column_3', '3')
     @test('extractReturnsCorrectValue: column_2', '2')
     @test('extractReturnsCorrectValue: column_1', '1')
     protected static async extractReturnsCorrectValue(columnNum: string) {
-        const realExtractor = await this.CsvExtractor(this.testCsvPath)
-
         const column = `column_${columnNum}`
 
         const rules: ExtractionRule[] = [
@@ -63,7 +60,7 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
             },
         ]
 
-        const record = realExtractor.extract(rules)
+        const record = this.extractor.extract(rules)
 
         const expected = {
             [columnNum]: Number(columnNum),
@@ -74,8 +71,6 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
 
     @test()
     protected static async returnsNumericValuesAsNumbers() {
-        const realExtractor = await this.CsvExtractor(this.testCsvPath)
-
         const rules: ExtractionRule[] = [
             {
                 column: 'column_1',
@@ -84,7 +79,7 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
             },
         ]
 
-        const record = realExtractor.extract(rules)
+        const record = this.extractor.extract(rules)
 
         Object.values(record).forEach((value) => assert.isNumber(value))
     }
@@ -107,7 +102,7 @@ export default class CsvExtractorTest extends AbstractSpruceTest {
 
     private static async CsvExtractor(csvPath?: string) {
         return (await CsvExtractorImpl.Create(
-            csvPath ?? this.testCsvPath
+            csvPath ?? this.csvPath
         )) as SpyCsvExtractor
     }
 }
