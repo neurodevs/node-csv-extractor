@@ -1,6 +1,6 @@
 {
   "name": "@neurodevs/node-csv-extractor",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "build/index.js",
   "repository": "https://github.com/neurodevs/node-csv-extractor.git",
   "scripts": {
@@ -64,7 +64,7 @@
     }
   },
   "dependencies": {
-    "@neurodevs/node-csv-loader": "^0.1.1",
+    "@neurodevs/node-csv-loader": "^0.2.0",
     "@sprucelabs/schema": "^30.0.395",
     "csv-parser": "^3.0.0"
   }
