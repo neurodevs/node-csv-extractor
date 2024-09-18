@@ -21,10 +21,10 @@ yarn add @neurodevs/node-csv-extractor
 To extract data from a CSV file based on a set of rules:
 
 ```typescript
-import { CsvExtractorImpl } from '@neurodevs/node-csv-extractor';
+import { CsvExtractorImpl } from '@neurodevs/node-csv-extractor'
 
 // In async function
-const extractor = await CsvExtractorImpl.Create('/path/to/csv');
+const extractor = await CsvExtractorImpl.Create('/path/to/csv')
 
 const extractedRecord = extractor.extract([
     {
@@ -37,7 +37,7 @@ const extractedRecord = extractor.extract([
         value: 'Another value to match',
         extract: 'Another column to extract',
     }
-]);
+])
 ```
 
 ## Example Use Case for a Stroboscopic Session with EEG
@@ -55,27 +55,27 @@ const extractedRecord = extractor.extract([
 ### Example Code
 
 ```typescript
-import { CsvExtractorImpl, ExtractionRule } from '@neurodevs/node-csv-extractor';
+import { CsvExtractorImpl, ExtractionRule } from '@neurodevs/node-csv-extractor'
 
-const extractor = await CsvExtractorImpl.Create('/path/to/csv');
+const extractor = await CsvExtractorImpl.Create('/path/to/csv')
 
-const rules: ExtractionRule[] = [];
-const numTrials = 5;
+const rules: ExtractionRule[] = []
+const numTrials = 5
 
 for (let i = 1; i <= numTrials; i++) {
     rules.push({
         column: 'segment-name',            // The column to search
         value: `eyes-closed-${i}`,         // The value to match
         extract: 'mean-alpha-band-power',  // The column to extract
-    });
+    })
     rules.push({
         column: 'segment-name',
         value: `eyes-open-${i}`,
         extract: 'mean-alpha-band-power',
-    });
+    })
 }
 
-const extractedRecord = extractor.extract(rules);
+const extractedRecord = extractor.extract(rules)
 
 // Example value of extractedRecord:
 //
@@ -104,15 +104,15 @@ const extractedRecord = extractor.extract(rules);
 You can use the following test doubles for unit testing purposes:
 
 ```typescript
-import { FakeCsvExtractor, SpyCsvExtractor } from '@neurodevs/node-csv-extractor';
+import { FakeCsvExtractor, SpyCsvExtractor } from '@neurodevs/node-csv-extractor'
 
 // Use FakeCsvExtractor for simulating the extraction process in tests
-CsvExtractorImpl.Class = FakeCsvExtractor;
+CsvExtractorImpl.Class = FakeCsvExtractor
 
 // Use SpyCsvExtractor to test real behavior with enhanced internal visibility
-CsvExtractorImpl.Class = SpyCsvExtractor;
+CsvExtractorImpl.Class = SpyCsvExtractor
 
-const extractor = await CsvExtractorImpl.Create('/path/to/csv');
+const extractor = await CsvExtractorImpl.Create('/path/to/csv')
 ```
 
 - **`FakeCsvExtractor`**: Provides a fake implementation to simulate data extraction in tests.
