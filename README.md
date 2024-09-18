@@ -23,6 +23,7 @@ To extract data from a CSV file based on a set of rules:
 ```typescript
 import { CsvExtractorImpl } from '@neurodevs/node-csv-extractor';
 
+// In async function
 const extractor = await CsvExtractorImpl.Create('/path/to/csv');
 
 const extractedRecord = extractor.extract([
