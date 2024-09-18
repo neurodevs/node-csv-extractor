@@ -48,7 +48,6 @@ const extractedRecord = extractor.extract([
 |-----------------|-----------------------|
 | eyes-closed-1   | 12.345                |
 | eyes-open-1     | 10.987                |
-| eyes-closed-2   | ...                   |
 | ...             | ...                   |
 | eyes-closed-5   | ...                   |
 | eyes-open-5     | ...                   |
