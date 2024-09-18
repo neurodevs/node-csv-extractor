@@ -80,6 +80,7 @@ async function extractStroboscopicData() {
     }
 
     const extractedRecord = extractor.extract(rules)
+
     return extractedRecord
 }
 
