@@ -1,6 +1,6 @@
 # node-csv-extractor
 
-Extract data from CSV files using user-defined rules.
+Extract data from CSV files using rules you define.
 
 ## Installation
 
